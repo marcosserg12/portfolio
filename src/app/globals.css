@@ -83,14 +83,14 @@ html.lenis, html.lenis body { height: auto; }
   border: 1px solid var(--color-rim);
 }
 
-/* Hero layout: --av is the avatar stage width. From xl the stage centres in the free band between the left windows
-   and the right side (desktop icons; from 90rem also the Projetos window), small enough that the orbit never
-   runs under a window. */
+/* Hero layout: --av is the avatar stage width. From xl the stage centres in the free band between sobre.txt and
+   the right side (the terminal in the lower right corner; from 90rem the Projetos window, further in), small enough
+   that the orbit never runs under a window. */
 .hero-vars { --floor: 112px; --av: min(980px, 64vw, calc((100svh - 176px) / 0.518)); }
 @media (width >= 80rem) {
   .hero-vars {
-    --le: calc(2.5vw + 400px);
-    --re: calc(100vw - 112px);
+    --le: calc(2.5vw + 336px);
+    --re: calc(100vw - 384px);
     --cx: calc((var(--le) + var(--re)) / 2);
     --av: min(980px, 64vw, calc((100svh - 176px) / 0.518), calc((var(--re) - var(--le) - 48px) / 0.62));
   }

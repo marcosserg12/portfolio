@@ -31,13 +31,14 @@ export const pt: Dictionary = {
     secondary: "Baixar CV",
     scrollHint: "role para explorar ↓",
     location: "Brasília, DF",
-    photoAlt: "Retrato de Marcos Sergio",
     videoLabel: "Avatar 3D de Marcos Sergio acenando enquanto programa no notebook",
   },
   about: {
     title: "Sobre",
     statement: "Desde 2020 crio e mantenho sistemas web em PHP para a Fiocruz, a Marinha e o Grupo Ibra. Gosto de automatizar o que ainda é feito à mão.",
     paragraph: "Trabalho do banco de dados à interface: modelo as tabelas no MySQL, escrevo a regra de negócio em PHP e Laravel e entrego o front em JavaScript, React e Next.js. No dia a dia, isso vira relatórios automáticos, formulários médicos em produção e integrações com N8N. Com IA, uso principalmente o Claude e o Claude Code com skills para revisar código, escrever testes e automatizar tarefas repetitivas.",
+    info: "Informações",
+    status: "Disponível para novos projetos",
     facts: [
       { label: "Base", value: "Brasília, DF" },
       { label: "Foco", value: "PHP · Full Stack · IA" },

@@ -28,6 +28,12 @@ type WindowProps = {
    * desktop's own windows: they simply go to the Dock, and on phones they leave the flow until restored.
    */
   ghost?: boolean;
+  /** Start in the Dock from this breakpoint up (hidden from the first paint, so it never flashes open). */
+  startMinimized?: keyof typeof START_MINIMIZED;
+};
+
+const START_MINIMIZED = {
+  wide: { query: "(min-width: 90rem)", hidden: "min-[90rem]:invisible" },
 };
 
 const GLYPHS = {
@@ -41,13 +47,14 @@ const GLYPHS = {
  * Yellow minimises with the genie effect into the Dock (optionally an outline keeps its place and restores it),
  * green zooms to full screen (double-click the title bar too; Esc or a click outside leaves), red is the caller's.
  */
-export function Window({ title, icon, children, dark, className = "", bodyClassName = "", style, ref, onTitlePointerDown, onPointerDown, onClose, maximizable = true, ghost = true, ...data }: WindowProps) {
+export function Window({ title, icon, children, dark, className = "", bodyClassName = "", style, ref, onTitlePointerDown, onPointerDown, onClose, maximizable = true, ghost = true, startMinimized, ...data }: WindowProps) {
   const { t } = useI18n();
   const labels = t.desktop.window;
   const id = useId();
   const [min, setMin] = useState(false);
   const [max, setMax] = useState(false);
   const [holder, setHolder] = useState(0);
+  const [booting, setBooting] = useState(!!startMinimized);
   const self = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => () => removeMinimized(id), [id]);
@@ -120,6 +127,19 @@ export function Window({ title, icon, children, dark, className = "", bodyClassN
     tl.eventCallback("onComplete", done).play();
   };
 
+  // Only the first layout decides: on a wide enough screen the window goes straight to the Dock, unseen.
+  useEffect(() => {
+    const start = startMinimized && START_MINIMIZED[startMinimized];
+    const el = self.current;
+    if (!start || !el) return;
+    if (window.matchMedia(start.query).matches) {
+      gsap.set(el, { visibility: "hidden" });
+      setMin(true);
+      addMinimized({ id, title, icon, restore });
+    }
+    setBooting(false);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const setRefs = (el: HTMLDivElement | null) => {
     self.current = el;
     if (typeof ref === "function") ref(el);
@@ -154,7 +174,7 @@ export function Window({ title, icon, children, dark, className = "", bodyClassN
           dark
             ? "on-dark border-black/40 bg-ink-2 text-paper shadow-[0_24px_60px_-18px_rgb(10_20_50/0.6),0_2px_8px_rgb(10_20_50/0.2)]"
             : "border-shade/10 bg-panel text-ink shadow-[0_24px_60px_-18px_rgb(20_40_90/0.45),0_2px_8px_rgb(20_40_90/0.12)]"
-        } ${max ? "fixed inset-x-3 bottom-24 top-14 z-[56] flex flex-col md:inset-x-10" : "relative"} ${min && !ghost ? "max-lg:hidden" : ""} ${className}`}
+        } ${max ? "fixed inset-x-3 bottom-24 top-14 z-[56] flex flex-col md:inset-x-10" : "relative"} ${min && !ghost ? "max-lg:hidden" : ""} ${booting && startMinimized ? START_MINIMIZED[startMinimized].hidden : ""} ${className}`}
       >
         <div
           onPointerDown={onTitlePointerDown}

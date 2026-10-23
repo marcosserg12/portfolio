@@ -1,4 +1,11 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+/** On wide screens the Projetos window starts in the Dock: bring it back and wait for it. */
+async function restore(page: Page, title: string, win: string) {
+  await page.getByRole("button", { name: `Restaurar: ${title}` }).click();
+  await expect(page.locator(`[data-win="${win}"]`)).toBeVisible();
+  await page.waitForTimeout(900);
+}
 
 test("hero shows name, role and primary actions", async ({ page }) => {
   await page.goto("/");
@@ -198,7 +205,8 @@ test("hero windows can be dragged by the title bar on desktop", async ({ page })
   expect(after.x - before.x).toBeGreaterThan(80);
 });
 
-for (const [width, wins] of [[1440, ["about", "terminal", "projects"]], [390, ["about", "terminal"]]] as const) {
+// at 1440 the Projetos window is already in the Dock
+for (const [width, wins, docked] of [[1440, ["about", "terminal"], 3], [390, ["about", "terminal"], 2]] as const) {
   test(`hero windows minimize into the Dock and come back at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
@@ -210,7 +218,7 @@ for (const [width, wins] of [[1440, ["about", "terminal", "projects"]], [390, ["
       await expect(win).not.toContainText("Janela minimizada no Dock");
     }
     const thumbs = page.getByRole("button", { name: /^Restaurar:/ });
-    await expect(thumbs).toHaveCount(wins.length);
+    await expect(thumbs).toHaveCount(docked);
     await page.getByRole("button", { name: "Restaurar: sobre.txt" }).click();
     await expect(page.locator('[data-win="about"]')).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -220,6 +228,7 @@ for (const [width, wins] of [[1440, ["about", "terminal", "projects"]], [390, ["
 test("the Projetos window shows four projects and scrolls the rest without moving the page", async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 900 });
   await page.goto("/");
+  await restore(page, "Projetos", "projects");
   const list = page.locator('[data-win="projects"] ul');
   await expect(list).toBeVisible();
   const box = (await list.boundingBox())!;
@@ -235,32 +244,42 @@ test("the Projetos window shows four projects and scrolls the rest without movin
   expect(await page.evaluate(() => scrollY)).toBe(0);
 });
 
+for (const width of [1440, 1600]) {
+  test(`the desktop opens tidy at ${width}px: sobre.txt, the terminal in the corner, five orbit chips, two files`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page.waitForTimeout(1500);
+    await expect(page.locator('[data-win="about"]')).toBeVisible();
+    await expect(page.locator('[data-win="projects"]')).toBeHidden();
+    const term = (await page.locator('[data-win="terminal"]').boundingBox())!;
+    expect(width - (term.x + term.width)).toBeLessThan(40); // lower right corner
+    expect(term.y).toBeGreaterThan(900 / 2);
+    expect(Math.round(term.width)).toBe(336);
+    await expect(page.getByRole("button", { name: "Restaurar: Projetos" })).toBeVisible();
+    await expect(page.locator("#top")).not.toContainText("git push origin main");
+    await expect(page.locator("#top")).not.toContainText("FROM projetos");
+    await expect(page.locator("[data-orbit]")).toHaveCount(5);
+    await expect(page.locator("[data-hero-icon]")).toHaveCount(2);
+  });
+}
+
+test("on phones the terminal stays open in the page", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await expect(page.locator('[data-win="terminal"]')).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Restaurar:/ })).toHaveCount(0);
+});
+
 test("desktop icons open with a single click", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await page.waitForTimeout(1500);
   const icon = (name: string) => page.locator("[data-hero-icon] a", { hasText: name });
-  const home = async () => {
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(500);
-  };
-  for (const [name, title] of [["Experiência.log", "#experiencia-title"], ["Projetos", "#projetos-title"], ["Contato", "#contato-title"]]) {
-    await home();
-    await icon(name).click();
-    await expect(page.locator(title)).toBeInViewport();
-  }
-  await home();
+  await icon("Experiência.log").click();
+  await expect(page.locator("#experiencia-title")).toBeInViewport();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(500);
   await expect(icon("Currículo.pdf")).toHaveAttribute("download", "");
-  await icon("Terminal").click();
-  await expect(page.locator("#term-input")).toBeFocused();
-  await page.locator('[data-win="terminal"]').getByRole("button", { name: "Fechar" }).click();
-  await expect(page.locator("#term-input")).toHaveCount(0);
-  await icon("Terminal").click();
-  await expect(page.locator("#term-input")).toBeFocused();
-  await page.locator('[data-win="terminal"]').getByRole("button", { name: "Minimizar" }).click();
-  await expect(page.locator('[data-win="terminal"]')).toBeHidden();
-  await icon("Terminal").click();
-  await expect(page.locator("#term-input")).toBeFocused();
 });
 
 test("theme opens light, switches to dark and opens light again", async ({ page }) => {

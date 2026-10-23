@@ -31,13 +31,14 @@ export const en: Dictionary = {
     secondary: "Download CV",
     scrollHint: "scroll to explore ↓",
     location: "Brasília, Brazil",
-    photoAlt: "Portrait of Marcos Sergio",
     videoLabel: "3D avatar of Marcos Sergio waving while coding on his laptop",
   },
   about: {
     title: "About",
     statement: "Since 2020 I have built and maintained PHP web systems for Fiocruz, the Brazilian Navy and Grupo Ibra. I like automating whatever is still done by hand.",
     paragraph: "I work from the database to the interface: I model tables in MySQL, write business logic in PHP and Laravel and ship the front end in JavaScript, React and Next.js. Day to day, that means automated reports, medical forms running in production and N8N integrations. With AI, I mostly use Claude and Claude Code with skills to review code, write tests and automate repetitive work.",
+    info: "Info",
+    status: "Open to new projects",
     facts: [
       { label: "Based in", value: "Brasília, Brazil" },
       { label: "Focus", value: "PHP · Full Stack · AI" },

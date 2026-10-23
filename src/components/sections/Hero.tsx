@@ -2,17 +2,16 @@
 
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode, type PointerEvent as ReactPointerEvent } from "react";
 import { AlphaVideo } from "@/components/ui/AlphaVideo";
-import { AppIcon, DocIcon, FolderIcon } from "@/components/ui/AppIcon";
+import { DocIcon, FolderIcon } from "@/components/ui/AppIcon";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Window } from "@/components/ui/Window";
 import { useI18n } from "@/lib/i18n";
 import { gsap, hasFinePointer, prefersReducedMotion, useGSAP } from "@/lib/motion";
 import { scrollToId } from "@/lib/scroll";
-import { minimizedWindows } from "@/lib/windows";
 import { Terminal } from "./Terminal";
 
-const ORBIT = ["PHP", "Laravel", "MySQL", "JavaScript", "Next.js", "ReactJS", "N8N", "Java", "Git"];
+const ORBIT = ["PHP", "Laravel", "MySQL", "JavaScript", "Next.js"];
 
 /**
  * The MarcOS desktop: on the wallpaper the waving avatar sits in front of a blue sun with the stack orbiting
@@ -26,6 +25,9 @@ export function Hero() {
   const orbit = useRef<HTMLDivElement>(null);
   const zTop = useRef(10);
   const [closed, setClosed] = useState<string[]>([]);
+  // Projetos starts in the Dock only on the first load; reopened after a close, it comes back open.
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => setLoaded(true), []);
   const [sel, setSel] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
   const cv = t.contact.rows.find((r) => r.id === "cv")!.href;
 
@@ -221,26 +223,10 @@ export function Hero() {
     window.addEventListener("pointerup", up);
   };
 
-  // The terminal may be closed or waiting in the Dock: bring it back first, then put the cursor in it.
-  const focusTerminal = () => {
-    const focus = () => document.getElementById("term-input")?.focus({ preventScroll: true });
-    if (closed.includes("terminal")) {
-      reopen();
-      return window.setTimeout(focus, 400);
-    }
-    const docked = minimizedWindows.get().find((w) => w.title.startsWith("terminal"));
-    if (docked) {
-      docked.restore();
-      return window.setTimeout(focus, 800);
-    }
-    focus();
-  };
+  // Only the files: the apps (projects, terminal, contact) already live in the Dock.
   const icons: { label: string; art: ReactNode; href: string; open?: () => void; download?: boolean }[] = [
     { label: t.desktop.icons.cv, art: <DocIcon size={58} />, href: cv, download: true },
     { label: t.desktop.icons.experience, art: <DocIcon size={58} badge="LOG" tone="#556178" />, href: "#experiencia", open: () => scrollToId("experiencia") },
-    { label: t.desktop.icons.projects, art: <FolderIcon size={62} />, href: "#projetos", open: () => scrollToId("projetos") },
-    { label: t.desktop.icons.terminal, art: <AppIcon app="terminal" glyph={28} className="size-14" />, href: "#term-input", open: focusTerminal },
-    { label: t.desktop.icons.contact, art: <AppIcon app="contato" glyph={28} className="size-14" />, href: "#contato", open: () => scrollToId("contato") },
   ];
   // One click opens (a website, not Finder): the icon is selected, pulses like an app launching, and opens.
   const iconClick = (i: (typeof icons)[number]) => (e: MouseEvent<HTMLAnchorElement>) => {
@@ -291,36 +277,26 @@ export function Hero() {
               className="absolute inset-0 size-full object-cover object-bottom sm:object-contain"
             />
           </div>
-          <span data-depth="1.1" aria-hidden="true" className="absolute right-[2%] top-[72%] hidden rounded-lg bg-glass px-3 py-2 font-mono text-[12px] text-ink shadow-[0_10px_30px_-8px_rgb(20_40_90/0.45)] min-[90rem]:block">
-            <span className="text-ok">✓</span> git push origin main
-          </span>
-          <span data-depth="1.4" aria-hidden="true" className="absolute right-[-3%] top-[40%] hidden rounded-lg border border-black/30 bg-ink-2 px-3 py-2 font-mono text-[12px] text-paper shadow-[0_10px_30px_-8px_rgb(20_40_90/0.55)] min-[90rem]:block">
-            <span className="text-accent-hi">SELECT</span> * FROM projetos;
-          </span>
         </div>
       </div>
       <div aria-hidden="true" className="h-3 border-t border-rim bg-glass/35 shadow-[0_-1px_0_rgb(20_40_90/0.08)] backdrop-blur-md lg:absolute lg:inset-x-0 lg:bottom-0 lg:h-[var(--floor)]" />
 
       <div className="relative z-10 flex flex-col gap-4 px-page pb-4 pt-4 lg:contents">
-        <div data-col="left" className="mx-auto flex w-full max-w-[560px] flex-col gap-4 lg:absolute lg:left-[2.5vw] lg:top-16 lg:mx-0 lg:w-[360px] xl:w-[400px]">
-          <Window title="sobre.txt" icon="user" maximizable={false} ghost={false} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" bodyClassName="p-6" data-drag data-hero data-win="about">
-            <h1 id="hero-title" className="text-[40px] font-semibold leading-none tracking-[-0.045em] md:text-[44px]">
+        <div data-col="left" className="mx-auto flex w-full max-w-[560px] flex-col gap-4 lg:absolute lg:left-[2.5vw] lg:top-16 lg:mx-0 lg:w-[336px]">
+          <Window title="sobre.txt" icon="user" maximizable={false} ghost={false} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" bodyClassName="p-6 lg:p-5" data-drag data-hero data-win="about">
+            {/* From lg the card is 84% of its old size (the column is as wide as it). */}
+            <h1 id="hero-title" className="text-[40px] font-semibold leading-none tracking-[-0.045em] md:text-[44px] lg:text-[37px]">
               {t.hero.firstName} {t.hero.lastName}
             </h1>
-            <p className="mt-3 font-medium text-accent-ink">
+            <p className="mt-3 font-medium text-accent-ink lg:mt-2.5 lg:text-[14px]">
               {t.hero.role} · {t.hero.location}
             </p>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted">{t.hero.lead}</p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              <Button href="#projetos" onClick={go("projetos")}>{t.hero.primary}</Button>
-              <Button href={cv} variant="outline" icon="download" iconFirst download>{t.hero.secondary}</Button>
+            <p className="mt-3 text-[15px] leading-relaxed text-muted lg:mt-2.5 lg:text-[14px]">{t.hero.lead}</p>
+            <div className="mt-5 flex flex-wrap gap-2 lg:mt-4">
+              <Button href="#projetos" onClick={go("projetos")} className="lg:h-10 lg:px-4 lg:text-[14px]">{t.hero.primary}</Button>
+              <Button href={cv} variant="outline" icon="download" iconFirst download className="lg:h-10 lg:px-4 lg:text-[14px]">{t.hero.secondary}</Button>
             </div>
           </Window>
-          {!closed.includes("terminal") && (
-            <Window dark title="terminal — marcos@brasilia" icon="terminal" maximizable={false} ghost={false} onClose={close("terminal")} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" data-drag data-hero data-win="terminal">
-              <Terminal />
-            </Window>
-          )}
           {closed.length > 0 && (
             <button type="button" onClick={reopen} className="glass flex items-center gap-2 self-start rounded-full px-4 py-2 text-[13px] font-semibold text-ink shadow-[0_8px_20px_-10px_rgb(20_40_90/0.5)] hover:bg-glass/80">
               <Icon name="max" size={14} />
@@ -329,9 +305,19 @@ export function Hero() {
           )}
         </div>
 
+        {/* The terminal at 84% of its old size: under sobre.txt on phones, in the lower left corner from lg (no room
+            beside the avatar yet) and in the lower right corner from xl. */}
+        {!closed.includes("terminal") && (
+          <div data-col="right" className="mx-auto w-full max-w-[560px] lg:absolute lg:bottom-[calc(var(--floor)+20px)] lg:left-[2.5vw] lg:mx-0 lg:w-[336px] xl:left-auto xl:right-6">
+            <Window dark title="terminal — marcos@brasilia" icon="terminal" maximizable={false} ghost={false} onClose={close("terminal")} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" data-drag data-hero data-win="terminal">
+              <Terminal />
+            </Window>
+          </div>
+        )}
+
         <div data-col="right" className="hidden min-[90rem]:absolute min-[90rem]:right-[136px] min-[90rem]:top-16 min-[90rem]:block min-[90rem]:w-[320px]">
           {!closed.includes("projects") && (
-          <Window title={t.desktop.icons.projects} icon="folder" maximizable={false} ghost={false} onClose={close("projects")} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" data-drag data-hero data-win="projects">
+          <Window title={t.desktop.icons.projects} icon="folder" maximizable={false} ghost={false} startMinimized={loaded ? undefined : "wide"} onClose={close("projects")} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" data-drag data-hero data-win="projects">
             <p className="flex items-center gap-2 border-b border-line px-4 py-2.5 font-mono text-[12px] text-muted">
               <Icon name="folder" size={14} />~/projetos · {t.projects.items.length}
             </p>

@@ -8,10 +8,12 @@ export interface Dictionary {
   nav: { links: { id: SectionId; label: string }[]; cta: string; skip: string; menu: string; close: string; language: string; home: string; items: string; theme: string };
   hero: {
     firstName: string; lastName: string; role: string; lead: string;
-    primary: string; secondary: string; scrollHint: string; location: string; photoAlt: string; videoLabel: string;
+    primary: string; secondary: string; scrollHint: string; location: string; videoLabel: string;
   };
   about: {
     title: string; statement: string; paragraph: string;
+    /** The Get Info panel: its heading and the availability line under the facts. */
+    info: string; status: string;
     facts: { label: string; value: string }[];
     stats: { value: number; suffix?: string; label: string }[];
   };

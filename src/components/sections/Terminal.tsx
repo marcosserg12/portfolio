@@ -61,7 +61,7 @@ export function Terminal() {
   };
 
   return (
-    <div ref={body} className="max-h-[230px] overflow-y-auto px-4 py-4 font-mono text-[13px] leading-relaxed">
+    <div ref={body} className="max-h-[230px] overflow-y-auto px-4 py-4 font-mono text-[13px] leading-relaxed lg:max-h-[194px] lg:px-3.5 lg:py-3.5 lg:text-[12px]">
       <p>
         <span className="text-accent-hi">{PROMPT}</span> whoami
       </p>
