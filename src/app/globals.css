@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@theme {
+  /* MarcOS: a light macOS-like desktop, navy ink, one blue accent */
+  --color-desk: #fdfefc;
+  --color-wood: #474746;
+  --color-surface: #eef1f6;
+  --color-panel: #ffffff;
+  --color-bar: #f6f7fa;
+  --color-line: #e1e5ec;
+  --color-ink: #0a1120;
+  --color-ink-2: #111b2e;
+  --color-ink-3: #1a2740;
+  --color-muted: #556178;
+  --color-paper: #e8edf5;
+  --color-ash: #93a0b8;
+  --color-accent: #2f5db8;
+  --color-accent-ink: #244a93;
+  --color-accent-hi: #8db2f5;
+  --color-accent-soft: #e6edfa;
+  --color-ok: #2bb673;
+  --color-live: #4ade9b;
+  --color-wa: #25d366;
+  /* theme-aware materials: white glass, black shade and a white rim in light; flipped in dark */
+  --color-glass: #ffffff;
+  --color-shade: #000000;
+  --color-rim: rgb(255 255 255 / 0.7);
+  --color-night: #0a1120;
+  --color-ok-ink: #13784a;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@utility px-page {
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* One desktop from top to bottom: a light wallpaper fixed behind the page, windows scroll over it */
+:root { color-scheme: light; --wallpaper: url("/img/wallpaper.svg"); --wallpaper-base: #a8c5f4; --label-glow: rgb(255 255 255 / 0.7); --light-off: #d5d9e0; }
+/* Dark mode (menu bar toggle; the site always opens light): the same desktop at night */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --wallpaper: url("/img/wallpaper-dark.svg");
+  --wallpaper-base: #16244d;
+  --label-glow: rgb(0 0 0 / 0.6);
+  --light-off: #4a5163;
+  --color-surface: #161b26;
+  --color-panel: #1e2330;
+  --color-bar: #262c3a;
+  --color-line: #343c4e;
+  --color-ink: #e8edf5;
+  --color-muted: #9aa6bd;
+  --color-accent-ink: #9dbcf7;
+  --color-accent-soft: #22314f;
+  --color-glass: #1a2030;
+  --color-shade: #ffffff;
+  --color-rim: rgb(255 255 255 / 0.12);
+  --color-ok-ink: #4ade9b;
+}
+html { background: var(--wallpaper-base); color: var(--color-ink); scroll-padding-top: 4rem; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--wallpaper) center / cover no-repeat, var(--wallpaper-base);
+}
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+::selection { background: var(--color-accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 6px; }
+.on-dark :focus-visible { outline-color: var(--color-accent-hi); }
+* { scrollbar-width: thin; scrollbar-color: #b9c4d8 transparent; }
+.on-dark * { scrollbar-color: #2a3a58 transparent; }
+
+/* Frosted glass, the macOS material: menu bar, dock, widgets */
+@utility glass {
+  background-color: color-mix(in oklab, var(--color-glass) 55%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid var(--color-rim);
+}
+
+/* Hero layout: --av is the avatar stage width. From xl the stage centres in the free band between the left windows
+   and the right side (desktop icons; from 90rem also the Projetos window), small enough that the orbit never
+   runs under a window. */
+.hero-vars { --floor: 112px; --av: min(980px, 64vw, calc((100svh - 176px) / 0.518)); }
+@media (width >= 80rem) {
+  .hero-vars {
+    --le: calc(2.5vw + 400px);
+    --re: calc(100vw - 112px);
+    --cx: calc((var(--le) + var(--re)) / 2);
+    --av: min(980px, 64vw, calc((100svh - 176px) / 0.518), calc((var(--re) - var(--le) - 48px) / 0.62));
+  }
+}
+@media (width >= 90rem) { .hero-vars { --re: calc(100vw - 472px); } }
+
+/* Theme switch: the new theme is revealed by a circle animated from the toggle (see ThemeToggle) */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { z-index: 1; }
+
+/* Motion boot: only hide what JS will reveal, and only when motion is allowed */
+.js-motion [data-reveal],
+.js-motion [data-hero],
+.js-motion [data-window] { opacity: 0; }
+
+@keyframes blink { 50% { opacity: 0; } }
+.caret { animation: blink 1s steps(1) infinite; }
+
+@keyframes pulse-ok { from { box-shadow: 0 0 0 0 rgb(74 222 155 / 0.5); } to { box-shadow: 0 0 0 8px rgb(74 222 155 / 0); } }
+.pulse-ok { animation: pulse-ok 1.6s infinite; }
+
+@keyframes float { 50% { transform: translateY(-8px); } }
+.float { animation: float 4.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .caret, .pulse-ok, .float { animation: none; }
+}

@@ -1,0 +1,25 @@
+# dependências e build
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# testes
+test-results/
+playwright-report/
+
+# ferramentas de IA/design usadas no desenvolvimento
+.taste-skill/
+.claude-flow/
+.impeccable/
+.claude/
+.superpowers/
+
+# ambiente e sistema
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
