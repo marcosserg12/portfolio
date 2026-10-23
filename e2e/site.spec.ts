@@ -217,6 +217,24 @@ for (const [width, wins] of [[1440, ["about", "terminal", "projects"]], [390, ["
   });
 }
 
+test("the Projetos window shows four projects and scrolls the rest without moving the page", async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 900 });
+  await page.goto("/");
+  const list = page.locator('[data-win="projects"] ul');
+  await expect(list).toBeVisible();
+  const box = (await list.boundingBox())!;
+  const shown = await list.locator("li").evaluateAll(
+    (items, bottom) => items.filter((li) => li.getBoundingClientRect().bottom <= bottom + 0.5).length,
+    box.y + box.height,
+  );
+  expect(shown).toBe(4);
+
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.wheel(0, 300);
+  await expect.poll(() => list.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
+  expect(await page.evaluate(() => scrollY)).toBe(0);
+});
+
 test("desktop icons open with a single click", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");

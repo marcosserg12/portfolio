@@ -22,12 +22,19 @@ export function useReveal(scope: RefObject<HTMLElement | null>) {
       // onLeave covers jumps (End key, fast flicks) that skip past an element without "entering" it.
       const rise = (batch: Element[]) =>
         gsap.fromTo(batch, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.07, overwrite: true });
-      const open = (batch: Element[]) =>
-        gsap
-          .timeline()
-          .fromTo(batch, { opacity: 0, y: 140, scaleX: 0.55, scaleY: 0.3, clipPath: genieShape(0.5, 0.85, 0.3) }, { opacity: 1, y: 0, scaleX: 1, scaleY: 1, duration: 0.85, ease: "expo.out", stagger: 0.1, transformOrigin: "50% 100%", overwrite: true })
-          .to(batch, { clipPath: genieShape(0.5, 0, 0.3), duration: 0.5, ease: "power2.out", stagger: 0.1 }, 0.15)
-          .set(batch, { clearProps: "clipPath,scale,scaleX,scaleY" });
+      // The outline is drawn from a plain number: handed the polygon strings, GSAP would read the computed clip-path
+      // and convert its 44 values one by one, each conversion forcing a layout, in the middle of the animation.
+      const open = (batch: Element[]) => {
+        const tl = gsap.timeline();
+        (batch as HTMLElement[]).forEach((el, i) => {
+          const shape = { q: 0.85 };
+          const draw = () => void (el.style.clipPath = genieShape(0.5, shape.q, 0.3));
+          draw();
+          tl.fromTo(el, { opacity: 0, y: 140, scaleX: 0.55, scaleY: 0.3 }, { opacity: 1, y: 0, scaleX: 1, scaleY: 1, duration: 0.85, ease: "expo.out", transformOrigin: "50% 100%", overwrite: true }, i * 0.1)
+            .to(shape, { q: 0, duration: 0.5, ease: "power2.out", onUpdate: draw }, i * 0.1 + 0.15);
+        });
+        return tl.set(batch, { clearProps: "clipPath,scale,scaleX,scaleY" });
+      };
       if (reveal.length) ScrollTrigger.batch(reveal, { start: "top 90%", once: true, onEnter: rise, onLeave: rise });
       if (windows.length) ScrollTrigger.batch(windows, { start: "top 92%", once: true, onEnter: open, onLeave: open });
       poses.forEach((img) =>

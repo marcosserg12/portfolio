@@ -58,18 +58,20 @@ export function Hero() {
     const chips = Array.from(orb.querySelectorAll<HTMLElement>("[data-orbit]"));
     const layers = Array.from(st.querySelectorAll<HTMLElement>("[data-depth]"));
     const still = prefersReducedMotion();
-    let mx = 0, my = 0, tx = 0, ty = 0, raf = 0;
+    let mx = 0, my = 0, tx = 0, ty = 0, raf = 0, r = orb.offsetWidth / 2;
     const t0 = performance.now();
     const onMove = (e: PointerEvent) => {
       tx = e.clientX / innerWidth - 0.5;
       ty = e.clientY / innerHeight - 0.5;
     };
     if (!still && hasFinePointer()) window.addEventListener("pointermove", onMove);
+    // Reading offsetWidth inside the frame would force a layout of the whole page on every frame.
+    const sized = new ResizeObserver(() => void (r = orb.offsetWidth / 2));
+    sized.observe(orb);
     const frame = (now: number) => {
       const time = (now - t0) / 1000;
       mx += (tx - mx) * 0.06;
       my += (ty - my) * 0.06;
-      const r = orb.offsetWidth / 2;
       const spin = still ? 0 : time * 0.12;
       chips.forEach((el, k) => {
         const a = spin + (k * Math.PI * 2) / chips.length - Math.PI / 2;
@@ -83,8 +85,17 @@ export function Hero() {
       if (!still) raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
+    // Nobody sees the orbit once the desktop has scrolled away: stop the loop until it comes back.
+    const seen = new IntersectionObserver(([e]) => {
+      if (still) return; // the single frame that places the chips must run
+      cancelAnimationFrame(raf);
+      if (e.isIntersecting) raf = requestAnimationFrame(frame);
+    });
+    seen.observe(st);
     return () => {
       cancelAnimationFrame(raf);
+      sized.disconnect();
+      seen.disconnect();
       window.removeEventListener("pointermove", onMove);
     };
   }, []);
@@ -324,7 +335,8 @@ export function Hero() {
             <p className="flex items-center gap-2 border-b border-line px-4 py-2.5 font-mono text-[12px] text-muted">
               <Icon name="folder" size={14} />~/projetos · {t.projects.items.length}
             </p>
-            <ul className="p-2">
+            {/* Four rows (55px each) in view, the rest scrolls; Lenis leaves the wheel to the list. */}
+            <ul data-lenis-prevent className="max-h-[236px] overflow-y-auto overscroll-contain p-2">
               {t.projects.items.map((p) => (
                 <li key={p.id}>
                   <a href="#projetos" onClick={go("projetos")} className="flex items-center gap-3 rounded-lg px-2.5 py-2 hover:bg-accent-soft">
