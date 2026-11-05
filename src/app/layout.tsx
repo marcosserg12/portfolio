@@ -6,8 +6,8 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
+// No `title` here: I18nProvider renders <title> so the tab follows the language switch.
 export const metadata: Metadata = {
-  title: "Marcos Sergio — Desenvolvedor PHP e Full Stack",
   description:
     "Portfólio de Marcos Sergio, desenvolvedor PHP e Full Stack em Brasília. Sistemas web para saúde, setor público e projetos próprios.",
   openGraph: { title: "Marcos Sergio — Desenvolvedor PHP e Full Stack", type: "website", locale: "pt_BR" },

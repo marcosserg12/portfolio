@@ -23,6 +23,7 @@ export const en: Dictionary = {
     theme: "Dark mode",
   },
   hero: {
+    window: "about.txt",
     firstName: "Marcos",
     lastName: "Sergio",
     role: "PHP & Full Stack Developer",
@@ -35,6 +36,7 @@ export const en: Dictionary = {
   },
   about: {
     title: "About",
+    window: "about.md",
     statement: "Since 2020 I have built and maintained PHP web systems for Fiocruz, the Brazilian Navy and Grupo Ibra. I like automating whatever is still done by hand.",
     paragraph: "I work from the database to the interface: I model tables in MySQL, write business logic in PHP and Laravel and ship the front end in JavaScript, React and Next.js. Day to day, that means automated reports, medical forms running in production and N8N integrations. With AI, I mostly use Claude and Claude Code with skills to review code, write tests and automate repetitive work.",
     info: "Info",
@@ -78,6 +80,7 @@ export const en: Dictionary = {
   },
   experience: {
     title: "Experience",
+    window: "git log --career",
     intro: "Six years across healthcare, the public sector and finance, almost always with PHP and MySQL in production.",
     current: "current",
     items: [
@@ -110,6 +113,9 @@ export const en: Dictionary = {
     shotLabel: "Screen",
     viewCode: "View code on GitHub",
     viewSite: "Visit the live site",
+    path: "~/projects",
+    fields: { kind: "type", domain: "sector", stack: "stack" },
+    aiDemo: { chat: ["Any openings tomorrow morning?", "I have 9:00 and 10:30. Which works for you?", "9:00, please"], flow: ["WhatsApp", "AI", "Calendar"] },
     items: [
       { id: "ecommerce", title: "DDM E-commerce", description: "Online store with catalog, cart, checkout, shipping quotes and a dashboard for products and orders.", kind: "E-commerce", domain: "Retail", tags: ["ReactJS", "Node.js", "MySQL"], repo: "https://github.com/marcosserg12/ddm_vendas", shots: ["/img/projetos/ddm-home.webp"] },
       { id: "saas", title: "Ready-made stores (SaaS)", description: "A SaaS platform for online stores: merchants pick a template, customise the store and sell on their own domain with PIX, boleto and card payments.", kind: "SaaS", domain: "Multi-tenant", tags: ["Laravel", "Next.js", "MySQL"], shots: ["/img/projetos/msshops-home.webp"] },
@@ -127,6 +133,7 @@ export const en: Dictionary = {
   },
   education: {
     title: "Education",
+    window: "education.txt",
     intro: "Computer Science, a postgraduate degree in Software Engineering and a graphic design course I still use on the front end.",
     items: [
       { course: "Postgraduate in Software Engineering", institution: "IESB University Center", period: "Feb 2025 — Oct 2025" },
@@ -136,6 +143,7 @@ export const en: Dictionary = {
   },
   contact: {
     title: "Contact",
+    window: "zsh — contact", command: "whoami --contact", location: "location",
     intro: "Have a system to get off the ground or an open position? Reach me wherever you prefer.",
     whatsappCta: "Message on WhatsApp",
     emailCta: "Send an email",

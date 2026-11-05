@@ -23,6 +23,7 @@ export const pt: Dictionary = {
     theme: "Tema escuro",
   },
   hero: {
+    window: "sobre.txt",
     firstName: "Marcos",
     lastName: "Sergio",
     role: "Desenvolvedor PHP e Full Stack",
@@ -35,6 +36,7 @@ export const pt: Dictionary = {
   },
   about: {
     title: "Sobre",
+    window: "sobre.md",
     statement: "Desde 2020 crio e mantenho sistemas web em PHP para a Fiocruz, a Marinha e o Grupo Ibra. Gosto de automatizar o que ainda é feito à mão.",
     paragraph: "Trabalho do banco de dados à interface: modelo as tabelas no MySQL, escrevo a regra de negócio em PHP e Laravel e entrego o front em JavaScript, React e Next.js. No dia a dia, isso vira relatórios automáticos, formulários médicos em produção e integrações com N8N. Com IA, uso principalmente o Claude e o Claude Code com skills para revisar código, escrever testes e automatizar tarefas repetitivas.",
     info: "Informações",
@@ -78,6 +80,7 @@ export const pt: Dictionary = {
   },
   experience: {
     title: "Experiência",
+    window: "git log --carreira",
     intro: "Seis anos entre saúde, setor público e sistema financeiro, quase sempre com PHP e MySQL em produção.",
     current: "atual",
     items: [
@@ -110,6 +113,9 @@ export const pt: Dictionary = {
     shotLabel: "Tela",
     viewCode: "Ver código no GitHub",
     viewSite: "Ver o site no ar",
+    path: "~/projetos",
+    fields: { kind: "tipo", domain: "área", stack: "stack" },
+    aiDemo: { chat: ["Tem horário amanhã de manhã?", "Tenho 9h e 10h30. Qual prefere?", "9h, por favor"], flow: ["WhatsApp", "IA", "Agenda"] },
     items: [
       { id: "ecommerce", title: "DDM E-commerce", description: "Loja virtual com catálogo, carrinho, checkout, cálculo de frete e painel para produtos e pedidos.", kind: "E-commerce", domain: "Varejo", tags: ["ReactJS", "Node.js", "MySQL"], repo: "https://github.com/marcosserg12/ddm_vendas", shots: ["/img/projetos/ddm-home.webp"] },
       { id: "saas", title: "Lojas prontas (SaaS)", description: "Plataforma SaaS de lojas virtuais: o lojista escolhe um template, personaliza a loja e vende no próprio domínio, com PIX, boleto e cartão.", kind: "SaaS", domain: "Multi-cliente", tags: ["Laravel", "Next.js", "MySQL"], shots: ["/img/projetos/msshops-home.webp"] },
@@ -127,6 +133,7 @@ export const pt: Dictionary = {
   },
   education: {
     title: "Formação",
+    window: "formacao.txt",
     intro: "Ciência da Computação, pós em Engenharia de Software e um curso de design gráfico que ainda uso no front.",
     items: [
       { course: "Pós-Graduação em Engenharia de Software", institution: "Centro Universitário IESB", period: "Fev/2025 — Out/2025" },
@@ -136,6 +143,7 @@ export const pt: Dictionary = {
   },
   contact: {
     title: "Contato",
+    window: "zsh — contato", command: "whoami --contato", location: "local",
     intro: "Tem um sistema para tirar do papel ou uma vaga aberta? Me chame por onde preferir.",
     whatsappCta: "Chamar no WhatsApp",
     emailCta: "Enviar e-mail",

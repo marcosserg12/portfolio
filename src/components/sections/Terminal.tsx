@@ -40,7 +40,8 @@ export function Terminal() {
     let out: ReactNode;
     if (key === "ajuda" || key === "help") out = term.help;
     else if (key === "ia" || key === "ai") out = term.ai;
-    else if (key === "ls") out = t.nav.links.map((l) => `${l.id}/`).join("  ");
+    // the folders in the visitor's language; every name listed is also a command (see ROUTES)
+    else if (key === "ls") out = t.nav.links.map((l) => `${l.label.toLowerCase()}/`).join("  ");
     else if (key === "sudo contratar" || key === "sudo hire") {
       out = <span className="text-live">{term.granted}</span>;
       window.setTimeout(() => window.open(wa, "_blank", "noopener"), 700);

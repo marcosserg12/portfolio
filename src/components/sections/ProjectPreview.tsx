@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import type { PreviewId } from "@/content/types";
+import { useI18n } from "@/lib/i18n";
 
 function Pill({ children, tone }: { children: ReactNode; tone: "cyan" | "violet" | "muted" }) {
   const tones = { cyan: "bg-accent-hi/20 text-accent-hi", violet: "bg-paper/15 text-paper", muted: "bg-paper/[0.08] text-ash" };
@@ -119,14 +120,15 @@ function Faturamento() {
 }
 
 function Ia() {
+  const { chat, flow } = useI18n().t.projects.aiDemo;
   const bubble = "max-w-[80%] rounded-xl px-3 py-2 text-paper";
   return (
     <div className="flex h-full flex-col gap-2">
-      <span className={`${bubble} self-start bg-paper/[0.08]`}>Tem horário amanhã de manhã?</span>
-      <span className={`${bubble} self-end bg-accent-hi/20`}>Tenho 9h e 10h30. Qual prefere?</span>
-      <span className={`${bubble} self-start bg-paper/[0.08]`}>9h, por favor</span>
+      {chat.map((line, i) => (
+        <span key={line} className={`${bubble} ${i % 2 ? "self-end bg-accent-hi/20" : "self-start bg-paper/[0.08]"}`}>{line}</span>
+      ))}
       <div className="mt-auto flex items-center gap-2">
-        {["WhatsApp", "IA", "Agenda"].map((node, i) => (
+        {flow.map((node, i) => (
           <span key={node} className="flex items-center gap-2">
             <span className={`rounded-lg border px-2.5 py-1.5 text-paper ${i === 1 ? "border-paper/40 bg-paper/20" : "border-accent-hi/60 bg-ink-3"}`}>{node}</span>
             {i < 2 && <span className="text-ash">→</span>}

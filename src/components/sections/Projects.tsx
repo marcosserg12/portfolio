@@ -32,7 +32,7 @@ export function Projects() {
     <Section id="projetos" ref={ref}>
       <Container>
         <SectionHead id="projetos" title={t.projects.title} intro={t.projects.intro} pose={<PoseBlock pose="point-down" reachBelow alt="" />} />
-        <Window data-window title={`${t.desktop.icons.projects} — ~/projetos`} icon="folder" bodyClassName="lg:grid lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
+        <Window data-window title={`${t.desktop.icons.projects} — ${t.projects.path}`} icon="folder" bodyClassName="lg:grid lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
           <ol className="divide-y divide-line lg:divide-y-0 lg:border-r lg:border-line lg:p-2">
             {t.projects.items.map((p, i) => {
               const on = i === active;
@@ -75,7 +75,7 @@ export function Projects() {
 
           <div className="hidden lg:block">
             <p className="flex items-center gap-2 border-b border-line px-6 py-3 font-mono text-[12px] text-muted">
-              <Icon name="folder" size={14} />~/projetos/{slug(current.title)}
+              <Icon name="folder" size={14} />{t.projects.path}/{slug(current.title)}
             </p>
             <div className="p-6 xl:p-8">
               <div className="relative mx-auto max-w-[680px]">
@@ -96,11 +96,11 @@ export function Projects() {
                   <ProjectLinks project={current} />
                 </div>
                 <dl className="grid h-fit grid-cols-[auto_1fr] gap-x-4 gap-y-1 font-mono text-[12px]">
-                  <dt className="text-muted">tipo</dt>
+                  <dt className="text-muted">{t.projects.fields.kind}</dt>
                   <dd>{current.kind}</dd>
-                  <dt className="text-muted">área</dt>
+                  <dt className="text-muted">{t.projects.fields.domain}</dt>
                   <dd>{current.domain}</dd>
-                  <dt className="text-muted">stack</dt>
+                  <dt className="text-muted">{t.projects.fields.stack}</dt>
                   <dd className="text-accent-ink">{current.tags.join(" · ")}</dd>
                 </dl>
               </div>

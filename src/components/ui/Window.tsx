@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState, type CSSProperties, type PointerEve
 import { useI18n } from "@/lib/i18n";
 import { gsap, prefersReducedMotion } from "@/lib/motion";
 import { getLenis } from "@/lib/scroll";
-import { addMinimized, genieTimeline, removeMinimized } from "@/lib/windows";
+import { addMinimized, genieTimeline, removeMinimized, renameMinimized } from "@/lib/windows";
 import { Icon, type IconName } from "./Icon";
 
 type WindowProps = {
@@ -58,6 +58,7 @@ export function Window({ title, icon, children, dark, className = "", bodyClassN
   const self = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => () => removeMinimized(id), [id]);
+  useEffect(() => renameMinimized(id, title), [id, title]);
 
   useEffect(() => {
     if (!max) return;

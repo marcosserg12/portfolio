@@ -15,7 +15,7 @@ export function Education() {
     <Section id="formacao" ref={ref}>
       <Container>
         <SectionHead id="formacao" title={t.education.title} intro={t.education.intro} />
-        <Window data-window title="formacao.txt" icon="cap">
+        <Window data-window title={t.education.window} icon="cap">
           <ul className="grid divide-y divide-line md:grid-cols-3 md:divide-x md:divide-y-0">
             {t.education.items.map((e) => (
               <li key={e.course} data-reveal className="flex flex-col gap-1.5 p-6">

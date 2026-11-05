@@ -25,7 +25,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = dictionaries[locale].meta.lang;
-    document.title = dictionaries[locale].meta.title;
   }, [locale]);
 
   const setLocale = useCallback((next: Locale) => {
@@ -36,7 +35,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(() => ({ locale, t: dictionaries[locale], setLocale }), [locale, setLocale]);
-  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+  // React owns the tab title (it hoists <title> into <head>), so it follows the language. Set through
+  // document.title, Next's metadata would put the Portuguese one back when React next commits the head.
+  return (
+    <I18nContext.Provider value={value}>
+      <title>{value.t.meta.title}</title>
+      {children}
+    </I18nContext.Provider>
+  );
 }
 
 export function useI18n(): I18nValue {

@@ -25,6 +25,29 @@ test("language toggle switches to English and persists", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 });
 
+test("in English nothing is left in Portuguese: window titles, details, terminal, Dock and tab title", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() => localStorage.setItem("locale", "en"));
+  await page.goto("/");
+  await page.waitForTimeout(2500); // past the point where Next used to put the Portuguese title back
+  await expect(page).toHaveTitle("Marcos Sergio — PHP & Full Stack Developer");
+  for (const title of ["about.txt", "about.md", "git log --career", "Projects — ~/projects", "education.txt", "zsh — contact"]) {
+    await expect(page.getByText(title, { exact: true }).first()).toBeAttached();
+  }
+  await expect(page.getByRole("button", { name: "Restore: Projects" })).toBeVisible();
+  await expect(page.locator("#projetos dl")).toContainText("sector");
+  await expect(page.locator("#contato")).toContainText("whoami --contact");
+  await expect(page.getByLabel("Interface illustration: AI customer service").first()).toContainText("Any openings tomorrow morning?");
+  const input = page.getByPlaceholder("type help");
+  await input.fill("ls");
+  await input.press("Enter");
+  await expect(page.locator('[data-win="terminal"]')).toContainText("about/  experience/  projects/");
+  const body = await page.locator("body").innerText();
+  for (const pt of ["sobre.txt", "sobre.md", "--carreira", "formacao.txt", "contato", "~/projetos", "Tem horário", "Projetos"]) {
+    expect(body, pt).not.toContain(pt);
+  }
+});
+
 test("mobile menu opens and closes", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

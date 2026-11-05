@@ -24,6 +24,13 @@ export function addMinimized(win: MinimizedWindow) {
   emit();
 }
 
+/** Keeps a minimised window's Dock label in step with its title (it changes with the language), without moving it. */
+export function renameMinimized(id: string, title: string) {
+  if (!items.some((i) => i.id === id && i.title !== title)) return;
+  items = items.map((i) => (i.id === id ? { ...i, title } : i));
+  emit();
+}
+
 export function removeMinimized(id: string) {
   items = items.filter((i) => i.id !== id);
   emit();

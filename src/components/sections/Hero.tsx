@@ -283,7 +283,7 @@ export function Hero() {
 
       <div className="relative z-10 flex flex-col gap-4 px-page pb-4 pt-4 lg:contents">
         <div data-col="left" className="mx-auto flex w-full max-w-[560px] flex-col gap-4 lg:absolute lg:left-[2.5vw] lg:top-16 lg:mx-0 lg:w-[336px]">
-          <Window title="sobre.txt" icon="user" maximizable={false} ghost={false} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" bodyClassName="p-6 lg:p-5" data-drag data-hero data-win="about">
+          <Window title={t.hero.window} icon="user" maximizable={false} ghost={false} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" bodyClassName="p-6 lg:p-5" data-drag data-hero data-win="about">
             {/* From lg the card is 84% of its old size (the column is as wide as it). */}
             <h1 id="hero-title" className="text-[40px] font-semibold leading-none tracking-[-0.045em] md:text-[44px] lg:text-[37px]">
               {t.hero.firstName} {t.hero.lastName}
@@ -319,7 +319,7 @@ export function Hero() {
           {!closed.includes("projects") && (
           <Window title={t.desktop.icons.projects} icon="folder" maximizable={false} ghost={false} startMinimized={loaded ? undefined : "wide"} onClose={close("projects")} onTitlePointerDown={startDrag} onPointerDown={focus} className="relative data-[dragging]:shadow-[0_40px_90px_-20px_rgb(20_40_90/0.6)]" data-drag data-hero data-win="projects">
             <p className="flex items-center gap-2 border-b border-line px-4 py-2.5 font-mono text-[12px] text-muted">
-              <Icon name="folder" size={14} />~/projetos · {t.projects.items.length}
+              <Icon name="folder" size={14} />{t.projects.path} · {t.projects.items.length}
             </p>
             {/* Four rows (55px each) in view, the rest scrolls; Lenis leaves the wheel to the list. */}
             <ul data-lenis-prevent className="max-h-[236px] overflow-y-auto overscroll-contain p-2">

@@ -24,7 +24,7 @@ export function Experience() {
     <Section id="experiencia" ref={ref}>
       <Container>
         <SectionHead id="experiencia" title={t.experience.title} intro={t.experience.intro} pose={<PoseBlock pose="crossed" alt="" />} />
-        <Window data-window title="git log --carreira" icon="log" bodyClassName="px-5 py-7 md:px-8 md:py-9">
+        <Window data-window title={t.experience.window} icon="log" bodyClassName="px-5 py-7 md:px-8 md:py-9">
           <ol className="relative">
             <span aria-hidden="true" className="absolute bottom-3 left-[7px] top-3 w-0.5 bg-line" />
             {t.experience.items.map((it, i) => {

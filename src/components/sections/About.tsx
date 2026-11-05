@@ -17,7 +17,7 @@ export function About() {
     <Section id="sobre" ref={ref}>
       <Container>
         <SectionHead id="sobre" title={t.about.title} pose={<PoseBlock pose="cheer" animated alt="" caption={locale === "pt" ? "olá!" : "hi!"} />} />
-        <Window data-window title="sobre.md" icon="file" bodyClassName="grid lg:grid-cols-[minmax(0,1fr)_340px]">
+        <Window data-window title={t.about.window} icon="file" bodyClassName="grid lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="flex flex-col gap-5 p-6 md:p-8 lg:p-10">
             <p className="max-w-[32ch] text-[clamp(22px,2.2vw,30px)] font-medium leading-[1.25] tracking-[-0.025em] text-balance">{t.about.statement}</p>
             <p className="max-w-[62ch] leading-relaxed text-muted text-pretty">{t.about.paragraph}</p>

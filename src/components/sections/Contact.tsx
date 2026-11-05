@@ -42,9 +42,9 @@ export function Contact() {
           </Widget>
         </div>
 
-        <Window data-window dark title="zsh — contato" icon="terminal" bodyClassName="p-6 font-mono text-[14px] leading-relaxed">
+        <Window data-window dark title={t.contact.window} icon="terminal" bodyClassName="p-6 font-mono text-[14px] leading-relaxed">
           <p>
-            <span className="text-accent-hi">$</span> whoami --contato
+            <span className="text-accent-hi">$</span> {t.contact.command}
           </p>
           <dl className="mt-4 grid grid-cols-[96px_minmax(0,1fr)] gap-x-3 gap-y-2.5">
             {t.contact.rows.map((r) => {
@@ -76,7 +76,7 @@ export function Contact() {
               );
             })}
             <div className="contents">
-              <dt className="text-ash">local</dt>
+              <dt className="text-ash">{t.contact.location}</dt>
               <dd>{t.hero.location}</dd>
             </div>
           </dl>

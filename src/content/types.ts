@@ -7,11 +7,13 @@ export interface Dictionary {
   meta: { lang: string; title: string };
   nav: { links: { id: SectionId; label: string }[]; cta: string; skip: string; menu: string; close: string; language: string; home: string; items: string; theme: string };
   hero: {
+    /** Each `window` is the title of that section's MarcOS window: a file name or a command, in the visitor's language. */
+    window: string;
     firstName: string; lastName: string; role: string; lead: string;
     primary: string; secondary: string; scrollHint: string; location: string; videoLabel: string;
   };
   about: {
-    title: string; statement: string; paragraph: string;
+    title: string; window: string; statement: string; paragraph: string;
     /** The Get Info panel: its heading and the availability line under the facts. */
     info: string; status: string;
     facts: { label: string; value: string }[];
@@ -22,16 +24,18 @@ export interface Dictionary {
     server: { title: string; intro: string; items: { name: string; detail: string }[] };
   };
   experience: {
-    title: string; intro: string; current: string;
+    title: string; window: string; intro: string; current: string;
     items: { period: string; duration: string; role: string; company: string; summary: string; tags: string[]; start: number; end: number | null }[];
   };
   projects: {
     title: string; intro: string; previewLabel: string; shotLabel: string; viewCode: string; viewSite: string;
+    /** The folder the projects live in, the labels of the details panel and the chat drawn for the AI customer service. */
+    path: string; fields: { kind: string; domain: string; stack: string }; aiDemo: { chat: string[]; flow: string[] };
     /** `repo` links the code on GitHub, `site` the project live on the web. */
     items: { id: PreviewId; title: string; description: string; kind: string; domain: string; tags: string[]; repo?: string; site?: string; shots?: string[] }[];
   };
-  education: { title: string; intro: string; items: { course: string; institution: string; period: string }[] };
-  contact: { title: string; intro: string; whatsappCta: string; emailCta: string; rows: { id: ContactId; label: string; value: string; href: string }[] };
+  education: { title: string; window: string; intro: string; items: { course: string; institution: string; period: string }[] };
+  contact: { title: string; window: string; command: string; location: string; intro: string; whatsappCta: string; emailCta: string; rows: { id: ContactId; label: string; value: string; href: string }[] };
   footer: { invitation: string; cta: string; backToTop: string; builtWith: string };
   desktop: {
     os: string; available: string; menu: string; selectProject: string;
