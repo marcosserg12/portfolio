@@ -1,6 +1,6 @@
 export type Locale = "pt" | "en";
 export type SectionId = "sobre" | "stack" | "experiencia" | "projetos" | "formacao" | "contato";
-export type PreviewId = "ecommerce" | "saas" | "ponto" | "faturamento" | "ia" | "chamados" | "nfce" | "atendimento" | "elite" | "unity" | "monitor";
+export type PreviewId = "ecommerce" | "saas" | "ponto" | "faturamento" | "ia" | "chamados" | "nfce" | "atendimento" | "elite" | "unity" | "monitor" | "ahoraeagora";
 export type ContactId = "email" | "whatsapp" | "linkedin" | "github" | "cv";
 
 export interface Dictionary {
@@ -26,8 +26,9 @@ export interface Dictionary {
     items: { period: string; duration: string; role: string; company: string; summary: string; tags: string[]; start: number; end: number | null }[];
   };
   projects: {
-    title: string; intro: string; previewLabel: string; shotLabel: string; viewCode: string;
-    items: { id: PreviewId; title: string; description: string; kind: string; domain: string; tags: string[]; repo?: string; shots?: string[] }[];
+    title: string; intro: string; previewLabel: string; shotLabel: string; viewCode: string; viewSite: string;
+    /** `repo` links the code on GitHub, `site` the project live on the web. */
+    items: { id: PreviewId; title: string; description: string; kind: string; domain: string; tags: string[]; repo?: string; site?: string; shots?: string[] }[];
   };
   education: { title: string; intro: string; items: { course: string; institution: string; period: string }[] };
   contact: { title: string; intro: string; whatsappCta: string; emailCta: string; rows: { id: ContactId; label: string; value: string; href: string }[] };

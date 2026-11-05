@@ -47,7 +47,7 @@ export const en: Dictionary = {
     stats: [
       { value: 6, suffix: "+", label: "years building for the web, since 2020" },
       { value: 4, label: "public and private institutions" },
-      { value: 11, label: "systems built" },
+      { value: 12, label: "systems and sites built" },
     ],
   },
   stack: {
@@ -105,15 +105,17 @@ export const en: Dictionary = {
   },
   projects: {
     title: "Projects",
-    intro: "Eleven systems I built, from e-commerce and hospital billing to server monitoring.",
+    intro: "Twelve projects I built, from e-commerce and hospital billing to a public health website and server monitoring.",
     previewLabel: "Interface illustration:",
     shotLabel: "Screen",
     viewCode: "View code on GitHub",
+    viewSite: "Visit the live site",
     items: [
       { id: "ecommerce", title: "DDM E-commerce", description: "Online store with catalog, cart, checkout, shipping quotes and a dashboard for products and orders.", kind: "E-commerce", domain: "Retail", tags: ["ReactJS", "Node.js", "MySQL"], repo: "https://github.com/marcosserg12/ddm_vendas", shots: ["/img/projetos/ddm-home.webp"] },
       { id: "saas", title: "Ready-made stores (SaaS)", description: "A SaaS platform for online stores: merchants pick a template, customise the store and sell on their own domain with PIX, boleto and card payments.", kind: "SaaS", domain: "Multi-tenant", tags: ["Laravel", "Next.js", "MySQL"], shots: ["/img/projetos/msshops-home.webp"] },
       { id: "ponto", title: "Time clock", description: "Work-hour tracking with face recognition and geofencing, sick notes, holidays and days off, plus the team's timeline for the day.", kind: "Web app", domain: "HR", tags: ["Laravel", "ReactJS", "MySQL"], shots: ["/img/projetos/ponto-painel.webp"] },
       { id: "faturamento", title: "Hospital billing", description: "Billing for hospital stays and exams under the TISS standard: health plans, claim denials, payments and a management dashboard.", kind: "Web app", domain: "Healthcare", tags: ["PHP", "MySQL", "JavaScript"], shots: ["/img/projetos/faturamento-painel.webp", "/img/projetos/faturamento-convenios.webp"] },
+      { id: "ahoraeagora", title: "A Hora É Agora", description: "Website for the Fiocruz/ENSP project that hands out free HIV self-tests in five Brazilian state capitals: the kit arrives by mail or is picked up from digital lockers and health units, with order tracking and cancellation on the site.", kind: "Institutional website", domain: "Public health", tags: ["WordPress", "Elementor", "PHP"], site: "https://ahoraeagora.org/", shots: ["/img/projetos/ahoraeagora-home.webp", "/img/projetos/ahoraeagora-formas.webp"] },
       { id: "ia", title: "AI customer service", description: "Automatic WhatsApp replies for a clinic, with scheduling orchestrated in N8N.", kind: "Automation", domain: "Healthcare", tags: ["N8N", "AI", "Webhooks"] },
       { id: "chamados", title: "Help desk", description: "Multi-company help desk with a Kanban board, real-time chat, AI triage and WhatsApp alerts.", kind: "Web app", domain: "Support", tags: ["Laravel", "ReactJS", "AI"], repo: "https://github.com/marcosserg12/sistema_chamados", shots: ["/img/projetos/chamados-ia.webp", "/img/projetos/chamados-dashboard.webp", "/img/projetos/chamados-kanban.webp"] },
       { id: "nfce", title: "POS with e-invoicing", description: "Counter sales for a snack bar, with tax invoices (NFC-e) sent straight to the Federal District tax authority: XML signed with an A1 certificate, QR code and PDF receipt.", kind: "Web app", domain: "Tax", tags: ["Python", "FastAPI", "MySQL"], repo: "https://github.com/marcosserg12/nananotas", shots: ["/img/projetos/nana-orcamento.webp", "/img/projetos/nana-notas.webp"] },

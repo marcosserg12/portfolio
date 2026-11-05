@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { PoseBlock } from "@/components/ui/PoseBlock";
 import { Container, Section, SectionHead } from "@/components/ui/Section";
 import { Window } from "@/components/ui/Window";
+import type { Dictionary } from "@/content/types";
 import { useI18n } from "@/lib/i18n";
 import { ProjectPreview } from "./ProjectPreview";
 
@@ -64,7 +65,7 @@ export function Projects() {
                       <ProjectPreview id={p.id} label={p.shots ? p.title : `${t.projects.previewLabel} ${p.title}`} shots={p.shots} shotLabel={t.projects.shotLabel} />
                       <p className="mt-3 leading-relaxed text-muted">{p.description}</p>
                       <p className="mt-2 font-mono text-[12px] text-accent-ink">{p.tags.join(" · ")}</p>
-                      {p.repo && <CodeLink href={p.repo} label={t.projects.viewCode} />}
+                      <ProjectLinks project={p} />
                     </div>
                   </article>
                 </li>
@@ -92,7 +93,7 @@ export function Projects() {
                 <div>
                   <p className="text-[22px] font-semibold tracking-[-0.02em]">{current.title}</p>
                   <p className="mt-2 max-w-[60ch] leading-relaxed text-muted">{current.description}</p>
-                  {current.repo && <CodeLink href={current.repo} label={t.projects.viewCode} />}
+                  <ProjectLinks project={current} />
                 </div>
                 <dl className="grid h-fit grid-cols-[auto_1fr] gap-x-4 gap-y-1 font-mono text-[12px]">
                   <dt className="text-muted">tipo</dt>
@@ -111,13 +112,25 @@ export function Projects() {
   );
 }
 
-function CodeLink({ href, label }: { href: string; label: string }) {
+/** Where to see the project outside the portfolio: live on the web and/or its code on GitHub. */
+function ProjectLinks({ project }: { project: Dictionary["projects"]["items"][number] }) {
+  const { t } = useI18n();
+  if (!project.site && !project.repo) return null;
+  return (
+    <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+      {project.site && <ExternalLink href={project.site} label={t.projects.viewSite} />}
+      {project.repo && <ExternalLink href={project.repo} label={t.projects.viewCode} />}
+    </p>
+  );
+}
+
+function ExternalLink({ href, label }: { href: string; label: string }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="mt-3 inline-flex items-center gap-1.5 font-medium text-accent-ink underline-offset-4 hover:underline"
+      className="inline-flex items-center gap-1.5 font-medium text-accent-ink underline-offset-4 hover:underline"
     >
       {label}
       <Icon name="arrow-up-right" size={14} />

@@ -84,11 +84,24 @@ test("hero terminal runs commands", async ({ page }) => {
   await expect(page.locator("#top")).toContainText("comando não encontrado: xyz");
 });
 
-test("projects list eleven entries and the panel follows the active one", async ({ page }) => {
+test("A Hora É Agora shows its screenshots and links to the live site", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const row = page.locator("#projetos article").filter({ hasText: "A Hora É Agora" });
+  await row.scrollIntoViewIfNeeded();
+  await row.hover();
+  const panel = page.locator("#projetos [data-active]");
+  await expect(panel.getByRole("img", { name: /A Hora É Agora — Tela 1\/2/ })).toBeVisible();
+  const site = page.locator("#projetos").getByRole("link", { name: /Ver o site no ar/ }).last();
+  await expect(site).toHaveAttribute("href", "https://ahoraeagora.org/");
+  await expect(site).toHaveAttribute("target", "_blank");
+});
+
+test("projects list twelve entries and the panel follows the active one", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const rows = page.locator("#projetos article");
-  await expect(rows).toHaveCount(11);
+  await expect(rows).toHaveCount(12);
   await expect(rows.first().getByRole("heading", { level: 3 })).toContainText("DDM E-commerce");
   await rows.nth(2).scrollIntoViewIfNeeded();
   await rows.nth(2).hover();

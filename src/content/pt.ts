@@ -47,7 +47,7 @@ export const pt: Dictionary = {
     stats: [
       { value: 6, suffix: "+", label: "anos desenvolvendo para web, desde 2020" },
       { value: 4, label: "instituições públicas e privadas" },
-      { value: 11, label: "sistemas construídos" },
+      { value: 12, label: "sistemas e sites construídos" },
     ],
   },
   stack: {
@@ -105,15 +105,17 @@ export const pt: Dictionary = {
   },
   projects: {
     title: "Projetos",
-    intro: "Onze sistemas que construí, do e-commerce ao faturamento hospitalar e ao monitoramento do servidor.",
+    intro: "Doze projetos que construí, do e-commerce e do faturamento hospitalar a um site de saúde pública e ao monitoramento do servidor.",
     previewLabel: "Ilustração da interface:",
     shotLabel: "Tela",
     viewCode: "Ver código no GitHub",
+    viewSite: "Ver o site no ar",
     items: [
       { id: "ecommerce", title: "DDM E-commerce", description: "Loja virtual com catálogo, carrinho, checkout, cálculo de frete e painel para produtos e pedidos.", kind: "E-commerce", domain: "Varejo", tags: ["ReactJS", "Node.js", "MySQL"], repo: "https://github.com/marcosserg12/ddm_vendas", shots: ["/img/projetos/ddm-home.webp"] },
       { id: "saas", title: "Lojas prontas (SaaS)", description: "Plataforma SaaS de lojas virtuais: o lojista escolhe um template, personaliza a loja e vende no próprio domínio, com PIX, boleto e cartão.", kind: "SaaS", domain: "Multi-cliente", tags: ["Laravel", "Next.js", "MySQL"], shots: ["/img/projetos/msshops-home.webp"] },
       { id: "ponto", title: "Ponto eletrônico", description: "Registro de jornada com reconhecimento facial e cerca geográfica, atestados, férias e folgas, e a linha do tempo do dia da equipe.", kind: "Sistema web", domain: "RH", tags: ["Laravel", "ReactJS", "MySQL"], shots: ["/img/projetos/ponto-painel.webp"] },
       { id: "faturamento", title: "Faturamento hospitalar", description: "Faturamento de internações e exames no padrão TISS: convênios, glosas, recebimentos e painel gerencial.", kind: "Sistema web", domain: "Saúde", tags: ["PHP", "MySQL", "JavaScript"], shots: ["/img/projetos/faturamento-painel.webp", "/img/projetos/faturamento-convenios.webp"] },
+      { id: "ahoraeagora", title: "A Hora É Agora", description: "Site do projeto da Fiocruz/ENSP que distribui de graça o autoteste de HIV em cinco capitais: o kit chega pelos Correios ou é retirado em armários digitais e nas unidades de saúde, com consulta e cancelamento do pedido pelo site.", kind: "Site institucional", domain: "Saúde pública", tags: ["WordPress", "Elementor", "PHP"], site: "https://ahoraeagora.org/", shots: ["/img/projetos/ahoraeagora-home.webp", "/img/projetos/ahoraeagora-formas.webp"] },
       { id: "ia", title: "Atendimento com IA", description: "Respostas automáticas para clínica no WhatsApp, com agendamento orquestrado no N8N.", kind: "Automação", domain: "Saúde", tags: ["N8N", "IA", "Webhooks"] },
       { id: "chamados", title: "Central de chamados", description: "Help desk multiempresa com Kanban, chat em tempo real, triagem por IA e avisos no WhatsApp.", kind: "Sistema web", domain: "Suporte", tags: ["Laravel", "ReactJS", "IA"], repo: "https://github.com/marcosserg12/sistema_chamados", shots: ["/img/projetos/chamados-ia.webp", "/img/projetos/chamados-dashboard.webp", "/img/projetos/chamados-kanban.webp"] },
       { id: "nfce", title: "PDV com NFC-e", description: "Vendas de balcão de uma lanchonete com nota fiscal emitida direto na Sefaz-DF: XML assinado com certificado A1, QR Code e DANFE em PDF.", kind: "Sistema web", domain: "Fiscal", tags: ["Python", "FastAPI", "MySQL"], repo: "https://github.com/marcosserg12/nananotas", shots: ["/img/projetos/nana-orcamento.webp", "/img/projetos/nana-notas.webp"] },
